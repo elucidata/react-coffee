@@ -1,0 +1,28 @@
+{
+  "name": "elucidata-react-coffee",
+  "version": "0.1.0",
+  "description": "Build React components using natural CoffeeScript syntax.",
+  "main": "index.js",
+  "scripts": {
+    "build": "coffee -c -o . src/component.coffee",
+    "min": "cat component.js | uglifyjs -c  -m > component.min.js",
+    "dist": "npm run build && npm run min",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elucidata/react-coffee.git"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "component",
+    "coffeescript"
+  ],
+  "author": "Matt McCray <matt@elucidata.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/elucidata/react-coffee/issues"
+  },
+  "homepage": "https://github.com/elucidata/react-coffee"
+}
