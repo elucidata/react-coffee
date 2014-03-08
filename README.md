@@ -1,4 +1,4 @@
-# react-coffee
+# elucidata-react-coffee
 
 Build React components using natural CoffeeScript syntax.
 
@@ -18,15 +18,22 @@ class UserChip extends Component
 module.exports= UserChip.reactify() 
 ```
 
+
 ## Installation
 
 For browserify:
 
     npm install elucidata-react-coffee --save
 
-For bowser:
+For bower:
 
     bower install elucidata-react-coffee --save
+
+
+## Todo
+
+- Examples
+- Tests
 
 
 # License
