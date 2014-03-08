@@ -1,3 +1,4 @@
+
 # Public: Define components as CoffeeScript classes
 #
 # Example:
@@ -55,6 +56,8 @@ translateTagCalls= (fn)->
   else
     fn
 
+React= @React or require('react')
+
 umd= (factory) ->
   if typeof exports is 'object'
     module.exports = factory()
@@ -64,9 +67,3 @@ umd= (factory) ->
     @Component = factory()
  
 umd -> Component
-
-`
-if(!React) {
-  var React= require('react');
-}
-`
