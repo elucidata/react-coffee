@@ -67,3 +67,5 @@ umd= (factory) ->
     @Component = factory()
  
 umd -> Component
+
+React.Component= Component

@@ -1,6 +1,6 @@
 {
   "name": "elucidata-react-coffee",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Build React components using natural CoffeeScript syntax.",
   "main": "index.js",
   "scripts": {

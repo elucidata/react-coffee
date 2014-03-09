@@ -87,4 +87,6 @@
     return Component;
   });
 
+  React.Component = Component;
+
 }).call(this);
