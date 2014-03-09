@@ -6,8 +6,11 @@
   Component = (function() {
     function Component() {}
 
-    Component.reactify = function() {
-      return React.createClass(extractMethods(this));
+    Component.reactify = function(componentClass) {
+      if (componentClass == null) {
+        componentClass = this;
+      }
+      return React.createClass(extractMethods(componentClass));
     };
 
     return Component;
@@ -55,9 +58,7 @@
       return fn;
     }
     source = fn.toString();
-    compiled = source.replace(tagParser, function(segment) {
-      var tag;
-      tag = segment.replace('this.', '').replace('(', '');
+    compiled = source.replace(tagParser, function(segment, tag) {
       if (React.DOM[tag] != null) {
         return "React.DOM." + tag + "(";
       } else {

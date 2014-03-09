@@ -17,8 +17,8 @@
 #
 class Component
   
-  @reactify: ->
-    React.createClass extractMethods this
+  @reactify: (componentClass=this)->
+    React.createClass extractMethods componentClass
 
 
 extractMethods= (comp)->
@@ -46,8 +46,7 @@ translateTagCalls= (fn)->
   return fn unless typeof(fn) is 'function'
   
   source= fn.toString()
-  compiled= source.replace tagParser, (segment)->
-    tag= segment.replace('this.', '').replace('(', '')
+  compiled= source.replace tagParser, (segment, tag)->
     if React.DOM[ tag ]? then "React.DOM.#{ tag }(" else segment
   
   if compiled isnt source
