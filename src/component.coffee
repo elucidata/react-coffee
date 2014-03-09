@@ -1,20 +1,25 @@
+###
+  elucidata-react-coffee v0.3.2
+  https://github.com/elucidata/react-coffee
 
-# Public: Define components as CoffeeScript classes
-#
-# Example:
-# 
-#   class UserChip extends Component
-# 
-#     @staticMethod: -> # becomes a static method on the React Component
-#       "hello"
-# 
-#     render: ->
-#       (@div null, "Hello")
-#
-#   # This will create the React component based on the class definition,
-#   # including translating (@div XXX) calls into React.DOM.div(XXX) calls.
-#   module.exports= UserChip.reactify() 
-#
+
+  Public: Define components as CoffeeScript classes
+ 
+  Example:
+  
+    class UserChip extends Component
+  
+      @staticMethod: -> # becomes a static method on the React Component
+        "hello"
+  
+      render: ->
+        (@div null, "Hello")
+ 
+    # This will create the React component based on the class definition,
+    # including translating (@div XXX) calls into React.DOM.div(XXX) calls.
+    module.exports= UserChip.reactify() 
+
+###
 class Component
   
   @reactify: (componentClass=this)->
@@ -22,21 +27,16 @@ class Component
 
 
 extractMethods= (comp)->
-  methods= {}
-  for key,val of comp::
-    continue if key in ignoredKeys
-    methods[key]= translateTagCalls val
+  methods= extractInto {}, comp::
   methods.displayName= comp.name or comp.displayName or 'UnnamedComponent'
-  methods.statics= extractStatics comp
+  methods.statics= extractInto Class:comp, comp
   methods
 
-extractStatics= (comp)->
-  statics=
-    Class: comp
-  for key,val of comp
+extractInto= (target, source)->
+  for key,val of source
     continue if key in ignoredKeys
-    statics[key]= translateTagCalls val
-  statics
+    target[key]= translateTagCalls val
+  target
 
 ignoredKeys= '__super__ constructor reactify'.split ' '
 
@@ -46,12 +46,11 @@ translateTagCalls= (fn)->
   return fn unless typeof(fn) is 'function'
   
   source= fn.toString()
-  compiled= source.replace tagParser, (segment, tag)->
-    if React.DOM[ tag ]? then "React.DOM.#{ tag }(" else segment
+  compiled= source.replace tagParser, (fragment, tag)->
+    if React.DOM[ tag ]? then "React.DOM.#{ tag }(" else fragment
   
   if compiled isnt source
-    # Yes, this uses eval. Deal with it.
-    eval "(#{ compiled })"
+    eval "(#{ compiled })" # Yes, this uses eval. Deal with it.
   else
     fn
 
