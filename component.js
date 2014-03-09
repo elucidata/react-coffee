@@ -1,13 +1,13 @@
 
 /*
-  elucidata-react-coffee v0.3.2
+  elucidata-react-coffee v0.4.0
   https://github.com/elucidata/react-coffee
 
 
   Public: Define components as CoffeeScript classes
  
   Example:
-  
+
     class UserChip extends Component
   
       @staticMethod: -> # becomes a static method on the React Component
@@ -17,8 +17,9 @@
         (@div null, "Hello")
  
      * This will create the React component based on the class definition,
-     * including translating (@div XXX) calls into React.DOM.div(XXX) calls.
-    module.exports= UserChip.reactify()
+     * including translating (@div XXX) calls into React.DOM.div(XXX) calls
+     * (disabled by default, pass true as param to enable).
+    module.exports= UserChip.reactify(true)
  */
 
 (function() {
@@ -28,35 +29,43 @@
   Component = (function() {
     function Component() {}
 
-    Component.reactify = function(componentClass) {
+    Component.reactify = function(translateTags, componentClass) {
+      if (translateTags == null) {
+        translateTags = false;
+      }
       if (componentClass == null) {
         componentClass = this;
       }
-      return React.createClass(extractMethods(componentClass));
+      if (typeof translateTags === 'function') {
+        componentClass = translateTags;
+        translateTags = false;
+      }
+      return React.createClass(extractMethods(componentClass, translateTags));
     };
 
     return Component;
 
   })();
 
-  extractMethods = function(comp) {
+  extractMethods = function(comp, translateTags) {
     var methods;
-    methods = extractInto({}, comp.prototype);
+    translateTags = comp.translateTags || translateTags;
+    methods = extractInto({}, comp.prototype, translateTags);
     methods.displayName = comp.name || comp.displayName || 'UnnamedComponent';
     methods.statics = extractInto({
       Class: comp
-    }, comp);
+    }, comp, translateTags);
     return methods;
   };
 
-  extractInto = function(target, source) {
+  extractInto = function(target, source, translateTags) {
     var key, val;
     for (key in source) {
       val = source[key];
       if (__indexOf.call(ignoredKeys, key) >= 0) {
         continue;
       }
-      target[key] = translateTagCalls(val);
+      target[key] = translateTags ? translateTagCalls(val) : val;
     }
     return target;
   };
