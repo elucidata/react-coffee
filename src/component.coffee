@@ -1,5 +1,5 @@
 ###
-  elucidata-react-coffee v0.4.0
+  elucidata-react-coffee
   https://github.com/elucidata/react-coffee
 
 
@@ -29,11 +29,10 @@ class Component
       translateTags= no
     React.createClass extractMethods componentClass, translateTags
 
-
 extractMethods= (comp, translateTags)->
   translateTags = comp.translateTags or translateTags
   methods= extractInto {}, comp::, translateTags
-  methods.displayName= comp.name or comp.displayName or 'UnnamedComponent'
+  methods.displayName= getFnName comp
   methods.statics= extractInto Class:comp, comp, translateTags
   methods
 
@@ -49,6 +48,10 @@ extractInto= (target, source, translateTags)->
 ignoredKeys= '__super__ constructor reactify'.split ' '
 
 tagParser= /this\.(\w*)\(/g
+nameParser= /function (.+?)\(/
+
+getFnName= (fn)->
+  fn.name or fn.displayName or (fn.toString().match(nameParser) or [null,'UnnamedComponent'])[1]
 
 translateTagCalls= (fn)->
   return fn unless typeof(fn) is 'function'

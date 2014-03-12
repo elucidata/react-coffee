@@ -1,6 +1,6 @@
 
 /*
-  elucidata-react-coffee v0.4.0
+  elucidata-react-coffee
   https://github.com/elucidata/react-coffee
 
 
@@ -23,7 +23,7 @@
  */
 
 (function() {
-  var Component, React, extractInto, extractMethods, ignoredKeys, tagParser, translateTagCalls, umd,
+  var Component, React, extractInto, extractMethods, getFnName, ignoredKeys, nameParser, tagParser, translateTagCalls, umd,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   Component = (function() {
@@ -51,7 +51,7 @@
     var methods;
     translateTags = comp.translateTags || translateTags;
     methods = extractInto({}, comp.prototype, translateTags);
-    methods.displayName = comp.name || comp.displayName || 'UnnamedComponent';
+    methods.displayName = getFnName(comp);
     methods.statics = extractInto({
       Class: comp
     }, comp, translateTags);
@@ -73,6 +73,12 @@
   ignoredKeys = '__super__ constructor reactify'.split(' ');
 
   tagParser = /this\.(\w*)\(/g;
+
+  nameParser = /function (.+?)\(/;
+
+  getFnName = function(fn) {
+    return fn.name || fn.displayName || (fn.toString().match(nameParser) || [null, 'UnnamedComponent'])[1];
+  };
 
   translateTagCalls = function(fn) {
     var compiled, source;
