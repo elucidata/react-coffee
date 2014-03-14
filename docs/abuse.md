@@ -32,5 +32,4 @@ class SimpleResultItem extends BaseResultItem.Class
 module.exports= SimpleResultItem.reactify()
 ```
 
-
-
+Bear in mind that when `reactify()` is called it creates and returns a React component. So you won't be able to use `super` in any overridden methods. Other than that, it should work as expected.
