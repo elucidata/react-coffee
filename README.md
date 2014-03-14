@@ -1,21 +1,48 @@
 # elucidata-react-coffee
 
-Build React components using natural CoffeeScript syntax.
+Define React components using natural CoffeeScript syntax.
 
 Example:
 
 ```coffeescript
-class UserChip extends Component
+{div}= React.DOM
 
+class UserChip extends React.Component
   @staticMethod: -> # becomes a static method on the React Component
     "hello"
 
   render: ->
-    (@div null, "Hello")
+    (div null, "Hello")
 
-# This will create the React component based on the class definition,
-# including translating (@div XXX) calls into React.DOM.div(XXX) calls.
-module.exports= UserChip.reactify() 
+module.exports= UserChip.reactify()
+```
+
+Alternate style:
+
+```coffeescript
+{div}= React.DOM
+
+module.exports= React.Component.reactify class MyComponent
+  
+  render: ->
+    (div null,
+      "My Component!"
+    )
+```
+
+There is *experimental* support for translating `(@div ...)` calls into `React.DOM.div(...)` calls (not just div, any tag defined in React.DOM). Under the covers it uses `eval` to create a new function with the translated calls, so it loses any enclosed values. For that reason it's disabled by default, and this particular feature is not recommended for any real use (except for maybe leaf level, html content-heavy, components).
+
+```coffeescript
+class UserChip extends React.Component
+  @translateTags: yes # Will convert `@div` into `React.DOM.div`. Default: no
+
+  @staticMethod: -> # becomes a static method on the React Component
+    (@section null, "statically yours")
+
+  render: ->
+    (@div null, "Hello ", (@b null, "you"), ".")
+
+module.exports= UserChip.reactify()
 ```
 
 

@@ -1,26 +1,8 @@
 ###
   elucidata-react-coffee
   https://github.com/elucidata/react-coffee
-
-
-  Public: Define components as CoffeeScript classes
- 
-  Example:
-
-    class UserChip extends Component
-  
-      @staticMethod: -> # becomes a static method on the React Component
-        "hello"
-  
-      render: ->
-        (@div null, "Hello")
- 
-    # This will create the React component based on the class definition,
-    # including translating (@div XXX) calls into React.DOM.div(XXX) calls
-    # (disabled by default, pass true as param to enable).
-    module.exports= UserChip.reactify(true) 
-
 ###
+
 class Component
   
   @reactify: (translateTags=no, componentClass=this)->
