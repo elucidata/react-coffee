@@ -5,84 +5,56 @@
  */
 
 (function() {
-  var Component, React, extractInto, extractMethods, getFnName, ignoredKeys, nameParser, tagParser, translateTagCalls, umd,
+  var Component, React, extractInto, extractMethods, getFnName, ignoredKeys, nameParser, umd,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  ignoredKeys = '__super__ constructor reactify toComponent'.split(' ');
+
+  nameParser = /function (.+?)\(/;
+
+  React = this.React || require('react');
 
   Component = (function() {
     function Component() {}
 
-    Component.reactify = function(translateTags, componentClass) {
-      if (translateTags == null) {
-        translateTags = false;
-      }
+    Component.toComponent = function(componentClass) {
       if (componentClass == null) {
         componentClass = this;
       }
-      if (typeof translateTags === 'function') {
-        componentClass = translateTags;
-        translateTags = false;
-      }
-      return React.createClass(extractMethods(componentClass, translateTags));
+      return React.createClass(extractMethods(componentClass));
     };
+
+    Component.reactify = Component.toComponent;
 
     return Component;
 
   })();
 
-  extractMethods = function(comp, translateTags) {
+  extractMethods = function(comp) {
     var methods;
-    translateTags = comp.translateTags || translateTags;
-    methods = extractInto({}, comp.prototype, translateTags);
+    methods = extractInto({}, comp.prototype);
     methods.displayName = getFnName(comp);
     methods.statics = extractInto({
       Class: comp
-    }, comp, translateTags);
+    }, comp);
     return methods;
   };
 
-  extractInto = function(target, source, translateTags) {
+  extractInto = function(target, source) {
     var key, val;
     for (key in source) {
       val = source[key];
       if (__indexOf.call(ignoredKeys, key) >= 0) {
         continue;
       }
-      target[key] = translateTags ? translateTagCalls(val) : val;
+      target[key] = val;
     }
     return target;
   };
 
-  ignoredKeys = '__super__ constructor reactify'.split(' ');
-
-  tagParser = /this\.(\w*)\(/g;
-
-  nameParser = /function (.+?)\(/;
-
   getFnName = function(fn) {
     return fn.name || fn.displayName || (fn.toString().match(nameParser) || [null, 'UnnamedComponent'])[1];
   };
-
-  translateTagCalls = function(fn) {
-    var compiled, source;
-    if (typeof fn !== 'function') {
-      return fn;
-    }
-    source = fn.toString();
-    compiled = source.replace(tagParser, function(fragment, tag) {
-      if (React.DOM[tag] != null) {
-        return "React.DOM." + tag + "(";
-      } else {
-        return fragment;
-      }
-    });
-    if (compiled !== source) {
-      return eval("(" + compiled + ")");
-    } else {
-      return fn;
-    }
-  };
-
-  React = this.React || require('react');
 
   umd = function(factory) {
     if (typeof exports === 'object') {

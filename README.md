@@ -14,7 +14,7 @@ class UserChip extends React.Component
   render: ->
     (div null, "Hello")
 
-module.exports= UserChip.reactify()
+module.exports= UserChip.toComponent()
 ```
 
 Alternate style:
@@ -22,27 +22,12 @@ Alternate style:
 ```coffeescript
 {div}= React.DOM
 
-module.exports= React.Component.reactify class MyComponent
+module.exports= React.Component.toComponent class MyComponent
   
   render: ->
     (div null,
       "My Component!"
     )
-```
-
-There is *experimental* support for translating `(@div ...)` calls into `React.DOM.div(...)` calls (not just div, any tag defined in React.DOM). Under the covers it uses `eval` to create a new function with the translated calls, so it loses any enclosed values. For that reason it's disabled by default, and this particular feature is not recommended for any real use (except for maybe leaf level, html content-heavy, components).
-
-```coffeescript
-class UserChip extends React.Component
-  @translateTags: yes # Will convert `@div` into `React.DOM.div`. Default: no
-
-  @staticMethod: -> # becomes a static method on the React Component
-    (@section null, "statically yours")
-
-  render: ->
-    (@div null, "Hello ", (@b null, "you"), ".")
-
-module.exports= UserChip.reactify()
 ```
 
 
@@ -61,6 +46,69 @@ For bower:
 
 - Examples
 - Tests
+
+## Brunch
+
+If you use [brunch](http://brunch.io), you should look into
+the [react-tags-brunch](https://github.com/elucidata/react-tags-brunch)
+plugin, it plays wonderfully with react-coffee! The plugin 
+interoplates `(@div ...)` kinds of calls into `React.DOM.div(...)`. 
+
+Example:
+
+```coffeescript
+class Login extends React.Component
+
+  render: ->
+    (@div className:'box',
+      (@header null,
+        "Login"
+      )
+      (@section className:'body',
+        (@form role:'form',
+          # ... etc
+        )
+      )
+      (@footer null,
+        (@button onClick:@whatever, "Login")
+      )
+    )
+
+module.exports= Login.toComponent()
+```
+
+After it has been run through brunch, the output looks like this:
+
+```javascript
+var Login,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Login = (function(_super) {
+  __extends(Login, _super);
+
+  function Login() {
+    return Login.__super__.constructor.apply(this, arguments);
+  }
+
+  Login.prototype.render = function() {
+    return React.DOM.div({
+      className: 'box'
+    }, React.DOM.header(null, "Login"), React.DOM.section({
+      className: 'body'
+    }, React.DOM.form({
+      role: 'form'
+    })), React.DOM.footer(null, React.DOM.button({
+      onClick: this.whatever
+    }, "Login")));
+  };
+
+  return Login;
+
+})(React.Component);
+
+module.exports = Login.toComponent();
+```
 
 
 # License

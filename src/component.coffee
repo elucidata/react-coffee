@@ -2,52 +2,34 @@
   elucidata-react-coffee
   https://github.com/elucidata/react-coffee
 ###
+ignoredKeys= '__super__ constructor reactify toComponent'.split ' '
+nameParser= /function (.+?)\(/
+React= @React or require('react')
 
 class Component
   
-  @reactify: (translateTags=no, componentClass=this)->
-    if typeof(translateTags) is 'function'
-      componentClass= translateTags
-      translateTags= no
-    React.createClass extractMethods componentClass, translateTags
+  @toComponent: (componentClass=this)->
+    React.createClass extractMethods componentClass
 
-extractMethods= (comp, translateTags)->
-  translateTags = comp.translateTags or translateTags
-  methods= extractInto {}, comp::, translateTags
+  # DEPRECATED: This alias will be removed from a future version.
+  @reactify: @toComponent
+  
+
+extractMethods= (comp)->
+  methods= extractInto {}, comp::
   methods.displayName= getFnName comp
-  methods.statics= extractInto Class:comp, comp, translateTags
+  methods.statics= extractInto Class:comp, comp
   methods
 
-extractInto= (target, source, translateTags)->
+extractInto= (target, source)->
   for key,val of source
     continue if key in ignoredKeys
-    target[key]= if translateTags
-        translateTagCalls val
-      else
-        val
+    target[key]= val
   target
 
-ignoredKeys= '__super__ constructor reactify'.split ' '
-
-tagParser= /this\.(\w*)\(/g
-nameParser= /function (.+?)\(/
 
 getFnName= (fn)->
   fn.name or fn.displayName or (fn.toString().match(nameParser) or [null,'UnnamedComponent'])[1]
-
-translateTagCalls= (fn)->
-  return fn unless typeof(fn) is 'function'
-  
-  source= fn.toString()
-  compiled= source.replace tagParser, (fragment, tag)->
-    if React.DOM[ tag ]? then "React.DOM.#{ tag }(" else fragment
-  
-  if compiled isnt source
-    eval "(#{ compiled })" # Yes, this uses eval. Deal with it.
-  else
-    fn
-
-React= @React or require('react')
 
 umd= (factory) ->
   if typeof exports is 'object'

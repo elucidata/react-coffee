@@ -15,7 +15,7 @@ class BaseResultItem extends React.Component
 
   renderOtherFields: -> null
 
-module.exports= BaseResultItem.reactify()
+module.exports= BaseResultItem.toComponent()
 ```
 
 `simple-result-item.coffee`:
@@ -29,7 +29,7 @@ class SimpleResultItem extends BaseResultItem.Class
       "actions or other things."
     )  
 
-module.exports= SimpleResultItem.reactify()
+module.exports= SimpleResultItem.toComponent()
 ```
 
-Bear in mind that when `reactify()` is called it creates and returns a React component. So you won't be able to use `super` in any overridden methods. Other than that, it should work as expected.
+Bear in mind that when `toComponent()` is called it creates and returns a React component. So you won't be able to use `super` in any overridden methods. Other than that, it should work as expected.
