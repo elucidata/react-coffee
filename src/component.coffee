@@ -2,7 +2,7 @@
   elucidata-react-coffee
   https://github.com/elucidata/react-coffee
 ###
-ignoredKeys= '__super__ constructor reactify toComponent'.split ' '
+ignoredKeys= '__super__ __superConstructor__ constructor reactify toComponent'.split ' '
 nameParser= /function (.+?)\(/
 React= @React or require('react')
 

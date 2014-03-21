@@ -1,7 +1,7 @@
 {
   "name": "elucidata-react-coffee",
   "main": "component.js",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "homepage": "https://github.com/elucidata/react-coffee",
   "authors": [
     "Matt McCray <matt@elucidata.net>"

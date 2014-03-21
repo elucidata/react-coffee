@@ -30,6 +30,11 @@ module.exports= React.Component.toComponent class MyComponent
     )
 ```
 
+## Note
+
+* You'll need to use the result of `.toComponent()` in React.
+* Also, when the React component is built the constructor function is
+  discarded -- so it will never be called.
 
 ## Installation
 
@@ -41,11 +46,6 @@ For bower:
 
     bower install elucidata-react-coffee --save
 
-
-## Todo
-
-- Examples
-- Tests
 
 ## Brunch
 
@@ -110,6 +110,42 @@ Login = (function(_super) {
 module.exports = Login.toComponent();
 ```
 
+# JSX and ES6
+
+If you are using JSX and enable the `--harmony` flag, you can use react-coffee
+with ES6 classes as well:
+
+```javascript
+class Test extends React.Component {
+
+  static message() {
+    return "Hello, mate."
+  }
+
+  getInitialState() {
+    return {
+      hello: 'Howdy'
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        You said: { this.type.message() }<br/>
+        I said: { this.state.hello }
+      </div>
+    )
+  }
+
+}
+
+module.exports= Test.toComponent()
+```
+
+## Todo
+
+- Examples
+- Tests
 
 # License
 
