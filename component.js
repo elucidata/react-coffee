@@ -32,7 +32,7 @@
 
   extractMethods = function(comp) {
     var methods;
-    methods = extractInto({}, comp.prototype);
+    methods = extractInto({}, new comp);
     methods.displayName = getFnName(comp);
     methods.statics = extractInto({
       Class: comp

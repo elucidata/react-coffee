@@ -16,7 +16,7 @@ class Component
   
 
 extractMethods= (comp)->
-  methods= extractInto {}, comp::
+  methods= extractInto {}, (new comp)
   methods.displayName= getFnName comp
   methods.statics= extractInto Class:comp, comp
   methods

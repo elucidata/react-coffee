@@ -1,6 +1,6 @@
 {
   "name": "elucidata-react-coffee",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Build React components using natural CoffeeScript syntax.",
   "author": "Matt McCray <matt@elucidata.net>",
   "license": "MIT",

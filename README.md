@@ -33,8 +33,10 @@ module.exports= React.Component.toComponent class MyComponent
 ## Note
 
 * You'll need to use the result of `.toComponent()` in React.
-* Also, when the React component is built the constructor function is
-  discarded -- so it will never be called.
+* When `.toComponent()` is called a new instance of the component is created.
+  So you can use the constructor to fill any instance properties (specifically
+  for ES6 classes). But don't do anything crazy in there. It's must ONLY be 
+  used for this purpose, as the constructor is discarded in the React component.
 
 ## Installation
 
