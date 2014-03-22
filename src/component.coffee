@@ -2,11 +2,12 @@
   elucidata-react-coffee
   https://github.com/elucidata/react-coffee
 ###
-ignoredKeys= '__super__ __superConstructor__ constructor reactify toComponent'.split ' '
 nameParser= /function (.+?)\(/
 React= @React or require('react')
 
 class Component
+
+  @keyBlacklist= '__super__ __superConstructor__ constructor keyBlacklist reactify toComponent'.split ' '
   
   @toComponent: (componentClass=this)->
     React.createClass extractMethods componentClass
@@ -23,7 +24,7 @@ extractMethods= (comp)->
 
 extractInto= (target, source)->
   for key,val of source
-    continue if key in ignoredKeys
+    continue if key in Component.keyBlacklist
     target[key]= val
   target
 

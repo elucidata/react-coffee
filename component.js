@@ -5,10 +5,8 @@
  */
 
 (function() {
-  var Component, React, extractInto, extractMethods, getFnName, ignoredKeys, nameParser, umd,
+  var Component, React, extractInto, extractMethods, getFnName, nameParser, umd,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-
-  ignoredKeys = '__super__ __superConstructor__ constructor reactify toComponent'.split(' ');
 
   nameParser = /function (.+?)\(/;
 
@@ -16,6 +14,8 @@
 
   Component = (function() {
     function Component() {}
+
+    Component.keyBlacklist = '__super__ __superConstructor__ constructor keyBlacklist reactify toComponent'.split(' ');
 
     Component.toComponent = function(componentClass) {
       if (componentClass == null) {
@@ -44,7 +44,7 @@
     var key, val;
     for (key in source) {
       val = source[key];
-      if (__indexOf.call(ignoredKeys, key) >= 0) {
+      if (__indexOf.call(Component.keyBlacklist, key) >= 0) {
         continue;
       }
       target[key] = val;
