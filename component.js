@@ -24,6 +24,8 @@
       return React.createClass(extractMethods(componentClass));
     };
 
+    Component.build = Component.toComponent;
+
     Component.reactify = Component.toComponent;
 
     return Component;

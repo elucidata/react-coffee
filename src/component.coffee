@@ -12,6 +12,8 @@ class Component
   @toComponent: (componentClass=this)->
     React.createClass extractMethods componentClass
 
+  @build: @toComponent
+  
   # DEPRECATED: This alias will be removed from a future version.
   @reactify: @toComponent
   
