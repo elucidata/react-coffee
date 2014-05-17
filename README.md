@@ -23,7 +23,7 @@ Alternate style:
 {div}= React.DOM
 
 module.exports= React.Component.toComponent class MyComponent
-  
+
   render: ->
     (div null,
       "My Component!"
@@ -35,7 +35,7 @@ module.exports= React.Component.toComponent class MyComponent
 * You'll need to use the result of `.toComponent()` in React.
 * When `.toComponent()` is called a new instance of the component is created.
   So you can use the constructor to fill any instance properties (specifically
-  for ES6 classes). But don't do anything crazy in there. It's must ONLY be 
+  for ES6 classes). But don't do anything crazy in there. It's must ONLY be
   used for this purpose, as the constructor is discarded in the React component.
 
 ## Installation
@@ -53,8 +53,8 @@ For bower:
 
 If you use [brunch](http://brunch.io), you should look into
 the [react-tags-brunch](https://github.com/elucidata/react-tags-brunch)
-plugin, it plays wonderfully with react-coffee! The plugin 
-interoplates `(@div ...)` kinds of calls into `React.DOM.div(...)`. 
+plugin, it plays wonderfully with react-coffee! The plugin
+interpolates `(@div ...)` kinds of calls into `React.DOM.div(...)`. 
 
 Example:
 
