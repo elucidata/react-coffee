@@ -10,7 +10,7 @@ class Component
   @keyBlacklist= '__super__ __superConstructor__ constructor keyBlacklist reactify build toComponent'.split ' '
 
   @toComponent: (componentClass=this, ignore=[])->
-    React.createClass extractMethods componentClass, ignore
+    React.createFactory React.createClass extractMethods componentClass, ignore
 
   @build: @toComponent
 
