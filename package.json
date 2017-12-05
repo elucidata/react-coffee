@@ -1,10 +1,10 @@
 {
   "name": "elucidata-react-coffee",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Build React components using natural CoffeeScript syntax.",
   "author": "Matt McCray <matt@elucidata.net>",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/react-coffee.js",
   "homepage": "https://github.com/elucidata/react-coffee",
   "bugs": {
     "url": "https://github.com/elucidata/react-coffee/issues"
@@ -19,19 +19,25 @@
     "component",
     "coffeescript"
   ],
+  "dependencies": {
+    "create-react-class": "^15.6.2"
+  },
+  "peerDependencies": {
+    "react": "^16.2.0"
+  },
   "devDependencies": {
-    "mocha": "~1.17.1",
+    "coffee-loader": "^0.9.0",
+    "coffeescript": "^2.0.3",
+    "mversion": "~0.3.1",
     "uglify-js": "~2.4.8",
-    "chai": "~1.9.0",
-    "mversion": "~0.3.1"
+    "webpack": "^3.10.0"
   },
   "scripts": {
-    "build": "coffee --no-header -c -o . src/component.coffee",
-    "min": "cat component.js | uglifyjs --comments=all -c  -m > component.min.js",
-    "dist": "npm run build && npm run min",
+    "build": "./node_modules/.bin/webpack",
+    "dist": "./node_modules/.bin/webpack -p",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "inc-major": "mversion major",
-    "inc-minor": "mversion minor",
-    "inc-patch": "mversion patch"
+    "inc-major": "./node_modules/.bin/mversion major",
+    "inc-minor": "./node_modules/.bin/mversion minor",
+    "inc-patch": "./node_modules/.bin/mversion patch"
   }
 }
